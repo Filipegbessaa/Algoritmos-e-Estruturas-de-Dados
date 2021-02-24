@@ -3,6 +3,7 @@ class Node:
         self.data = data
         self.left = None
         self.right = None
+        self.parent = None
 
 
 class BinaryTree:
@@ -12,6 +13,8 @@ class BinaryTree:
 
         else:
             self.__root = None
+
+        self.__first = None
 
     def insert(self, value):
         parent = None
@@ -29,6 +32,7 @@ class BinaryTree:
 
         elif value < parent.data:
             parent.left = value
+            self.__first = value
 
         else:
             parent.right = value
