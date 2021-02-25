@@ -3,7 +3,6 @@ class Node:
         self.data = data
         self.left = None
         self.right = None
-        self.parent = None
 
 
 class BinaryTree:
@@ -34,39 +33,34 @@ class BinaryTree:
 
         elif value < parent.data:
             parent.left = Node(value)
-            parent.left.parent = parent.data
             self.__first = Node(value)
             self.current_node = self.__first
 
         else:
             parent.right = Node(value)
-            parent.right.parent = parent.data
 
-    def check_order(self, value):
-        if value < self.current_node.data:
-            return self.order
+    def check_order(self, value, num_nodes):
+        order = num_nodes
+        current_node = self.__root
+        for i in range(num_nodes):
+            if value > current_node.data:
+                order += 1
+                if current_node == self.__root:
+                    return order
 
-        elif value > self.current_node.data:
-            self.order += 1
-
-            if self.current_node.parent == None:
-                self.order += 1
-                return self.order
-
-            elif value < self.current_node.parent:
-                return self.order
-
-            elif value > self.current_node.parent:
-                self.current_node = self.current_node.parent
-                self.check_order(value)
+            elif value < current_node.data:
+                current_node = current_node.left
+                if current_node.left == None:
+                    return 1
+                order -= 1
+                if value > current_node.left.data:
+                    return order
 
 
 def main():
     qty_numbers, qty_queries = input().split()
     qty_numbers = int(qty_numbers)
     qty_queries = int(qty_queries)
-    print(qty_numbers)
-    print(qty_queries)
     tree = BinaryTree()
     numbers_list = input().split()
     for i in range(qty_numbers - 1, -1, -1):
@@ -74,7 +68,7 @@ def main():
 
     for i in range(qty_queries):
         number_to_check = input()
-        print(tree.check_order(int(number_to_check)))
+        print(tree.check_order(int(number_to_check), qty_numbers))
 
 
 if __name__ == "__main__":
